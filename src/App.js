@@ -123,4 +123,16 @@ function ItemsList({ items }) {
         </div>
     );
 }
+
+class Detail2 extends React.Component{
+    componentDidMount() {
+        // 컴포넌트가 로드되고 나서 실행할 코드
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // 컴포넌트가 업데이트 되고나서 실행할 코드
+    }
+    componentWillUnmount() {
+        // 컴포넌트가 삭제되기전 실행할 코드
+    }
+}
 export default App;
