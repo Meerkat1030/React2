@@ -9,6 +9,7 @@ import Cart from './pages/Cart.js';
 import axios from "axios";
 import async from "async";
 
+
 function App() {
 
     let [items] = useState(data);
@@ -29,6 +30,13 @@ function App() {
     //동시에 여러 Ajax 요청 날리기
     // Promise.all([axios.get('URL1'), axios.get('URL2')])
     //     .then()
+
+    //localStorage
+    localStorage.setItem('userId', JSON.stringify({"판매자정보":{"이름":"남도일","지역":"서울"}})); // 데이터 저장
+    let item = localStorage.getItem('userId');
+    console.log(item);
+    console.log(JSON.parse(item)); // 형변환
+    // localStorage.removeItem('userId', 'jh');
 
 
     return (
