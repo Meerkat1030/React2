@@ -41,6 +41,7 @@ function App() {
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/detail">Detail</Nav.Link>
+                        <Nav.Link href="/cart">Cart</Nav.Link>
                         {/*<Nav.Link href="#pricing">Pricing</Nav.Link>*/}
                         <button onClick={() => {navigate('detail')}}>상세페이지 이동</button>
                         <button onClick={() => {navigate(-1)}}>이전페이지</button>
@@ -66,7 +67,7 @@ function App() {
                                 {
                                     items.map((item,index)=> {
                                         return (
-                                            <Card item={item} index={index+1} ></Card>
+                                            <Card key={index} item={item} index={index+1} ></Card>
                                         )
                                     })
                                 }

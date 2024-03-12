@@ -1,6 +1,7 @@
 import {Table} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {changeName, increase} from "../store/userSlice.js";
+import {addCount} from "../store.js";
 
 function Cart() {
 
@@ -11,6 +12,7 @@ function Cart() {
     console.log(user);
 
     let state = useSelector((state) => state)
+    // console.log(state)
     return (
         <div>
             {state.user.name}의 장바구니
@@ -33,7 +35,9 @@ function Cart() {
                             <td>{state.cart[i].id}</td>
                             <td>{state.cart[i].title}</td>
                             <td>{state.cart[i].count}</td>
-                            <td>안녕</td>
+                            <td><button onClick={()=>
+                            dispatch(addCount(state.cart[i].id))}>+</button></td>
+
                         </tr>
                     )
                 }

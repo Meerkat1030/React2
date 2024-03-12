@@ -2,6 +2,8 @@ import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState} from "react";
 import {Nav} from "react-bootstrap";
+import  {addItem} from "../store.js"
+import {useDispatch} from "react-redux";
 // let YellowBtn = styled.button`
 // //    css 작성
 //     background:  ${props => props.bg};
@@ -16,6 +18,8 @@ function Detail(props) {
     let findItem = items.find(function (x){
         return x.id == id;
     })
+
+    let dispatch = useDispatch();
 
     console.log(items);
     const imgUrl = process.env.PUBLIC_URL + "/item" + (Number(id) + 1) + ".jpg"
@@ -62,6 +66,9 @@ function Detail(props) {
                     <p>{findItem.content}</p>
                     <p>{findItem.price}</p>
                     <button className="btn btn-danger">주문하기</button>
+                    <button className="btn btn-primary" onClick={() => {
+                        dispatch(addItem(findItem))
+                    }}>장바구니담기</button>
                 </div>
             </div>
             <input onChange={(e) => {setNum(e.target.value)}}></input>
