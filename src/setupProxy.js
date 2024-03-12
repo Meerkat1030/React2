@@ -2,9 +2,9 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app){
     app.use(
-        "/shop_react/master/src/**",
+        "/shop/master/src/**",
         createProxyMiddleware( {
-            target: 'https://raw.githubusercontent.com/leeanJP',
+            target: 'https://raw.githubusercontent.com/Meerkat1030',
             changeOrigin: true
         })
     )

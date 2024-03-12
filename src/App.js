@@ -83,7 +83,7 @@ function App() {
                         </div>
 
                         <button onClick={()=> {
-                            axios.get("https://raw.githubusercontent.com/leeanJP/shop_react/master/src/userdata.json")
+                            axios.get("https://raw.githubusercontent.com/Meerkat1030/React2/master/src/data.json")
                                 .then((data) => {
                                     //요청이 성공했을 때
                                     console.log(data);
