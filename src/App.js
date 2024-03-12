@@ -1,138 +1,169 @@
-/*eslint-disable*/
-import React, { useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Container, Nav, Navbar } from 'react-bootstrap';
-import bg from './bg_main.jpg';
+import {Container, Nav, Navbar} from 'react-bootstrap';
 import data from './data.js';
+import React, {useState} from "react";
 import {Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
-import Detail from './pages/Detail.js'
-
-console.log(data);
+import Detail from './pages/Detail.js';
+import Cart from './pages/Cart.js';
+import axios from "axios";
+import async from "async";
 
 function App() {
-    const [items, setItems] = useState(data);
+
+    let [items] = useState(data);
     let navigate = useNavigate();
+    //post 요청
+    // axios.post('요청할 URL', {name:'kim'});
+
+    //
+    let param = {id: 0 , pass : "1231sd"}
+    // async function getAPI() {
+    //     try{
+    //         const  res = await axios.get('url1');
+    //     }catch (e){
+    //
+    //     }
+    // }
+
+    //동시에 여러 Ajax 요청 날리기
+    // Promise.all([axios.get('URL1'), axios.get('URL2')])
+    //     .then()
+
+
     return (
         <div className="App">
+
 
             <Navbar bg="dark" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand href="#home">Navbar</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/detail">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link href="/detail">Detail</Nav.Link>
+                        {/*<Nav.Link href="#pricing">Pricing</Nav.Link>*/}
                         <button onClick={() => {navigate('detail')}}>상세페이지 이동</button>
                         <button onClick={() => {navigate(-1)}}>이전페이지</button>
                         <button onClick={() => {navigate(1)}}>다음페이지</button>
+
                     </Nav>
                 </Container>
             </Navbar>
-            <Routes>
-                <Route path="/" element={<>
-                    <div className="main-bg"></div>
 
-                    {/*컴포넌트화 한후 데이터 바인딩 시킨 버전*/}
-                    <ItemsList items={items}></ItemsList></>}></Route>
-                <Route path="/detail/:id" element={<Detail items={items}/>}></Route>
-                <Route path="/cart" element={<div>장바구니 페이지</div>}></Route>
+
+            <Routes>
+                <Route path="*" element={<div>404 페이지</div>}/>
+                <Route path="/" element={
+                    <>
+                        <div className="main-bg"></div>
+                        <div className="container">
+                            <div className="row">
+                                {/*
+                                    1. 상품 목록을 컴포넌트화 하기
+                                    2. 컴포넌트 > 데이터바인딩
+                                    3. 3개 상품 map으로 반복
+                                */}
+                                {
+                                    items.map((item,index)=> {
+                                        return (
+                                            <Card item={item} index={index+1} ></Card>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+
+                        <button onClick={()=> {
+                            axios.get("https://raw.githubusercontent.com/leeanJP/shop_react/master/src/userdata.json")
+                                .then((data) => {
+                                    //요청이 성공했을 때
+                                    console.log(data);
+
+                                    //copy = [기존 array, 가져온 data]
+                                    //setItems(copy);
+                                    // [{},{},{},{},{},{}]
+
+                                }).catch(()=>{
+                                    //요청이 실패했을 때
+
+                                    console.log("axios 요청 실패");
+                                }).finally(() =>{
+                                    //요청 성공여부에 상관없이 항상 실행할 코드
+                                })
+                        }}>ajax 요청</button>
+                    </>
+                }/>
+                <Route path="/detail/:id" element={
+                        <Detail items={items}/>
+                    }
+                />
+                <Route path="/cart" element={<Cart/>}/>
                 <Route path="/about" element={<About/>}>
-                    <Route path="member" element={<div>멤버 소개</div>}></Route>
-                    <Route path="loc" element={<div>오시는 길</div>}></Route>
+                    <Route path="member" element={<div>멤버 소개</div>}/>
+                    <Route path="loc" element={<div>오시는 길</div>}/>
                 </Route>
+                <Route path="/event" element={<EventPage/>}>
+                    <Route path="one" element={<p>생일축하 쿠폰 이벤트</p>}></Route>
+                    <Route path="two" element={<p>첫 주문시 배송비 무료!</p>}></Route>
+
+                </Route>
+
                 {/*
-                    1. /event/one 페이지 접속 시 생일 축하 쿠폰 이벤트 표시
+                    1. /event/one 페이지 접속 시 생일축하 쿠폰 이벤트 표시
                     2. /event/two 페이지 접속 시 첫 주문 배송비 무료 이벤트 표시
                 */}
-                <Route path="/event" element={<Event/>}>
-                    <Route path="one" element={<div>생일 축하 쿠폰 이벤트</div>}></Route>
-                    <Route path="two" element={<div>첫 주문 배송비 무료 이벤트</div>}></Route>
-                </Route>
-                <Route path="*" element={<div>404 page</div>}/>
             </Routes>
-
-
-            {/*컴포넌트화 안시킨 하드코딩 버전*/}
-            {/*<div className="container">*/}
-            {/*    <div className="row">*/}
-            {/*        <div className="col-md-4">*/}
-            {/*            <div className="image-box">*/}
-            {/*                <img className="image-thumbnail" src={process.env.PUBLIC_URL+'/item1.jpg'}></img>*/}
-
-            {/*            </div>*/}
-            {/*            <h4>{items[0].title}</h4>*/}
-            {/*            <p>{items[0].content}</p>*/}
-            {/*        </div>*/}
-            {/*        <div className="col-md-4">*/}
-            {/*            <div className="image-box">*/}
-            {/*                <img className="image-thumbnail" src={process.env.PUBLIC_URL + '/item2.jpg'}></img>*/}
-
-            {/*            </div>*/}
-            {/*            <h4>{items[1].title}</h4>*/}
-            {/*            <p>{items[1].content}</p>*/}
-            {/*        </div>*/}
-            {/*        <div className="col-md-4">*/}
-            {/*            <div className="image-box">*/}
-            {/*                <img className="image-thumbnail" src={process.env.PUBLIC_URL + '/item3.jpg'}></img>*/}
-
-            {/*            </div>*/}
-            {/*            <h4>{items[2].title}</h4>*/}
-            {/*            <p>{items[2].content}</p>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </div>
     );
 }
 
-function About(){
+function EventPage() {
     return(
+        <div>
+            <h2>오늘의 이벤트</h2>
+            <Outlet></Outlet>
+        </div>
+    )
+}
+
+function About() {
+    return (
         <div>
             <h2>about 페이지</h2>
             <Outlet>
-
             </Outlet>
         </div>
     )
 }
-function Event(){
-    return(
-        <div>
-            <h2>event 페이지</h2>
-            <Outlet>
 
-            </Outlet>
-        </div>
-    )
-}
-function ItemsList({ items }) {
+
+
+function Card(props){
     return (
-        <div className="container">
-            <div className="row">
-                {items.map((item, index) => (
-                    <div className="col-md-4" key={index}>
-                        <div className="image-box">
-                            <img className="image-thumbnail" src={`${process.env.PUBLIC_URL}/${`item${index + 1}.jpg`}`} alt={`item-${index + 1}`}></img>
-                        </div>
-                        <h4>{item.title}</h4>
-                        <p>{item.content}</p>
-                    </div>
-                ))}
+        <div className="col-md-4">
+            <div className="image-box">
+                <img className="image-thumbnail" src={process.env.PUBLIC_URL+'/item'+props.index+'.jpg'}>
+
+                </img>
             </div>
+            <h4>{props.item.title}</h4>
+            <p>{props.item.content}</p>
         </div>
-    );
+    )
 }
 
-class Detail2 extends React.Component{
+class Detail2 extends React.Component {
     componentDidMount() {
-        // 컴포넌트가 로드되고 나서 실행할 코드
+        //컴포넌트가 로드되고 나서 실행할 코드
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // 컴포넌트가 업데이트 되고나서 실행할 코드
+        //컴포넌트가 업데이트 되고나서 실행할 코드
+
     }
     componentWillUnmount() {
-        // 컴포넌트가 삭제되기전 실행할 코드
+        //컴포넌트가 삭제되기전 실행할 코드
     }
 }
+
+
 export default App;
