@@ -1,16 +1,14 @@
-import {configureStore, createSlice} from "@reduxjs/toolkit";
-
+import {createSlice} from "@reduxjs/toolkit";
 let user = createSlice({
     name : 'user', //state 이름
-    initialState : {name: 'Lee', age : 20},//state 기본 값
+    initialState : {name : 'Lee' , age : 20}, //state 기본값
     reducers : {
         changeName(state){
-            state.name = 'park';
-
+            state.name = 'park'
         },
         increase(state, action){
-            state.age += action.payload;
-        }
+            state.age += action.payload
+        },
     }
 })
 export let {changeName, increase} = user.actions

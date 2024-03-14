@@ -1,7 +1,7 @@
-function Component(){
+function Component() {
     if(true){
         return <p>참이면 보여지는 HTML</p>
-    }else {
+    } else { //else문 생략 가능
         return null;
     }
 
@@ -14,44 +14,44 @@ function Component(){
     )
 }
 
-function Component2(){
+function Component2() {
     var user = 'seller';
 
     if(user === 'seller'){
         return <h2>판매자 로그인</h2>
-    }else if(user==='customer'){
+    }else if( user === 'customer') {
         return <h2>구매자 로그인</h2>
-    }else{
+    }else {
         return <h2>일반 로그인</h2>
     }
 
     switch (user){
         case 'seller':
             return <h2>판매자 로그인</h2>
-        case 'customer':
-            return <h2>구매자 로그인</h2>
-        default:
+        default :
             return <h2>일반 로그인</h2>
+
     }
+
 }
 
-function Component3(){
+function Component3() {
     var status = 'info';
     var tabUI = {
-        info : <p>상품정보</p>,
-        shipping : <p>배송정보</p>,
+        info :  <p>상품정보</p>,
+        shipping :  <p>배송정보</p>,
         refund : <p>환불약관</p>
     }
-    return(
+    return (
         <div>
             {
                 {
-                    info : <p>상품정보</p>,
-                    shipping : <p>배송정보</p>,
+                    info :  <p>상품정보</p>,
+                    shipping :  <p>배송정보</p>,
                     refund : <p>환불약관</p>
-                }
+                }[status]
+            }
 
-            }[status]
             {
                 tabUI[status]
             }

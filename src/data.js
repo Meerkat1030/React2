@@ -1,24 +1,24 @@
 let data = [
     {
         id : 0,
-        title : "송우기1",
-        content : "손가락 깨물 송우기",
+        title : "Gemma sweatshirt",
+        content : "오버 아웃핏 스웨트셔츠",
         price : 120000
     },
 
     {
         id : 1,
-        title : "송우기2",
-        content : "핑크빛 탈색머리 송우기",
-        price : 110000
+        title : "TRS Tag hoodie zip-up 02",
+        content : " 오버사이즈 핏 후드 집업",
+        price : 279000
     },
 
     {
         id : 2,
-        title : "송우기3",
-        content : "공항패션 송우기",
-        price : 130000
+        title : "TRS Tag varsity jacket 01",
+        content : "세미 오버사이즈 핏 자켓",
+        price : 479000
     }
 ]
 
-export default data
+export default data;

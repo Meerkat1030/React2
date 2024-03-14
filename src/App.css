@@ -39,7 +39,7 @@
 
 .main-bg {
   height: 360px;
-  background-image: url("./bg_main.jpg");
+  background-image: url("./bg_main.png");
   background-size: cover;
   background-position: center;
 }

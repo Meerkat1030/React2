@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import { useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Nav} from "react-bootstrap";
-import  {addItem} from "../store.js"
+import {addItem} from "../store.js";
 import {useDispatch} from "react-redux";
 // let YellowBtn = styled.button`
 // //    css 작성
@@ -14,41 +14,41 @@ import {useDispatch} from "react-redux";
 function Detail(props) {
 
     let {id} = useParams();
-    let items = props.items;
-    let findItem = items.find(function (x){
-        return x.id == id;
-    })
+    let items = props.items
+    // let findItem = props.items.find((x) => x.id == id);
+    let findItem = items.find(function (x) {
+        return x.id == id
+    });
 
     let dispatch = useDispatch();
-
-    console.log(items);
-    const imgUrl = process.env.PUBLIC_URL + "/item" + (Number(id) + 1) + ".jpg"
-
+    const imgUrl = process.env.PUBLIC_URL + "/item" + (Number(findItem.id) + 1) + ".jpg";
     let [count, setCount] = useState(0);
     let [alert1, setAlert1] = useState(true);
-    let [num , setNum] = useState('');
+    let [num, setNum] = useState('');
     let [tab, setTab] = useState(0);
 
 
     useEffect(() => {
         //컴포넌트가 mount update 될 때 코드 실행됨
-        let timer = setTimeout(()=> {setAlert1(5000)}, 5000)
+        let timer = setTimeout(() => {
+            setAlert1(5000)
+        }, 5000)
 
         return () => {
             //여기있는게 먼저 실행되고
             clearTimeout(timer);
         }
 
-    },[count]);
+    }, [count]);
 
     useEffect(() => {
-        if(isNaN(num) == true){
+        if (isNaN(num) == true) {
             alert('숫자만 입력가능');
         }
     }, [num]);
 
 
-    return(
+    return (
         <div className="container">
 
             {
@@ -59,7 +59,7 @@ function Detail(props) {
 
             <div className="row">
                 <div className="col-md-6">
-                    <img src={process.env.PUBLIC_URL + '/item' + (Number(id) + 1) + '.jpg'} width="100%" ></img>
+                    <img src={imgUrl} width="100%"/>
                 </div>
                 <div className="col-md-6">
                     <h4 className="pt-5">{findItem.title}</h4>
@@ -68,14 +68,19 @@ function Detail(props) {
                     <button className="btn btn-danger">주문하기</button>
                     <button className="btn btn-primary" onClick={() => {
                         dispatch(addItem(findItem))
-                    }}>장바구니담기</button>
+                    }}>장바구니 담기</button>
                 </div>
             </div>
-            <input onChange={(e) => {setNum(e.target.value)}}></input>
+            <input onChange={(e) => {
+                setNum(e.target.value)
+            }}></input>
 
-            <button onClick={()=> {setCount(count+1)}}>버튼</button>
+            <button onClick={() => {
+                setCount(count + 1)
+            }}>버튼
+            </button>
 
-            <Nav variant="tabs"  defaultActiveKey="link0">
+            <Nav variant="tabs" defaultActiveKey="link0">
                 <Nav.Item>
                     <Nav.Link onClick={() => setTab(0)} eventKey="link0">상품상세</Nav.Link>
                 </Nav.Item>
@@ -83,21 +88,23 @@ function Detail(props) {
                     <Nav.Link onClick={() => setTab(1)} eventKey="link1">상품 리뷰</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link onClick={() => setTab(2)}eventKey="link2">Q&A</Nav.Link>
+                    <Nav.Link onClick={() => setTab(2)} eventKey="link2">Q&A</Nav.Link>
                 </Nav.Item>
             </Nav>
 
-            <TabContent tab ={tab}/>
+            <TabContent tab={tab}/>
 
         </div>
     )
 }
 
-function TabContent({tab}){
+function TabContent({tab}) {
     let [fade, setFade] = useState('');
 
     useEffect(() => {
-        setTimeout( ()=> {setFade('end')},300)
+        setTimeout(() => {
+            setFade('end')
+        }, 300)
         return () => {
             setFade('');
         }
@@ -105,7 +112,7 @@ function TabContent({tab}){
 
     return (
         <div className={'start ' + fade}>
-            {[<div>내용0</div>,  <div>내용1</div> , <div>내용2</div>][tab]}
+            {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab]}
         </div>
     )
 }

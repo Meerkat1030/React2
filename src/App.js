@@ -2,16 +2,21 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Nav, Navbar} from 'react-bootstrap';
 import data from './data.js';
-import React, {useState} from "react";
+import React, {useState, lazy, Suspense, useTransition, useDeferredValue} from "react";
 import {Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
-import Detail from './pages/Detail.js';
-import Cart from './pages/Cart.js';
 import axios from "axios";
-import async from "async";
+import { useQuery } from 'react-query'
 
+const Detail = lazy(() => import('./pages/Detail.js'))
+const Cart = lazy(() => import('./pages/Cart.js'))
+//import Detail from './pages/Detail.js';
+//import Cart from './pages/Cart.js';
+
+let a = new Array(10000).fill(0);
 
 function App() {
-
+    let [name, setName] = useState('')
+    let [isPending, startTransition] = useTransition()
     let [items] = useState(data);
     let navigate = useNavigate();
     //post 요청
@@ -31,16 +36,32 @@ function App() {
     // Promise.all([axios.get('URL1'), axios.get('URL2')])
     //     .then()
 
+
     //localStorage
-    localStorage.setItem('userId', JSON.stringify({"판매자정보":{"이름":"남도일","지역":"서울"}})); // 데이터 저장
-    let item = localStorage.getItem('userId');
-    console.log(item);
-    console.log(JSON.parse(item)); // 형변환
-    // localStorage.removeItem('userId', 'jh');
+    // localStorage.setItem('data', JSON.stringify('{"판매자정보":{"이름":"남도일","지역":"서울"}}')); //데이터 저장
+    // let item = localStorage.getItem('data'); //데이터 가져오기
+    // console.log(JSON.parse(item));//형변환
+    //
+
+
+    // let result = useQuery('data', ()=>
+    //     axios.get('https://raw.githubusercontent.com/leeanJP/shop_react/master/src/userdata.json')
+    //         .then((a)=> {
+    //             console.log('요청됨');
+    //             return a.data
+    //         }).finally(() =>{
+    //             console.log(1);
+    //         }), {staleTime : 1000 }
+    //
+    // )
+    //
+    // console.log(result);
+
 
 
     return (
         <div className="App">
+
 
 
             <Navbar bg="dark" data-bs-theme="dark">
@@ -56,15 +77,23 @@ function App() {
                         <button onClick={() => {navigate(1)}}>다음페이지</button>
 
                     </Nav>
+                    <Nav className="ms-auto text-white">
+                        {/*{ result.isLoading && '로딩중' }*/}
+                        {/*{ result.error && '에러남'}*/}
+                        {/*{ result.data && result.data.name }*/}
+                    </Nav>
                 </Container>
             </Navbar>
 
-
+            <Suspense fallback={<div> 로딩중 </div>}>
             <Routes>
                 <Route path="*" element={<div>404 페이지</div>}/>
                 <Route path="/" element={
                     <>
+
+
                         <div className="main-bg"></div>
+
                         <div className="container">
                             <div className="row">
                                 {/*
@@ -75,7 +104,7 @@ function App() {
                                 {
                                     items.map((item,index)=> {
                                         return (
-                                            <Card key={index} item={item} index={index+1} ></Card>
+                                            <Card item={item} index={index+1} key={index} ></Card>
                                         )
                                     })
                                 }
@@ -83,18 +112,13 @@ function App() {
                         </div>
 
                         <button onClick={()=> {
-                            axios.get("https://raw.githubusercontent.com/Meerkat1030/React2/master/src/data.json")
+                            axios.get("https://raw.githubusercontent.com/leeanJP/shop_react/master/src/data.json")
                                 .then((data) => {
                                     //요청이 성공했을 때
                                     console.log(data);
 
-                                    //copy = [기존 array, 가져온 data]
-                                    //setItems(copy);
-                                    // [{},{},{},{},{},{}]
-
                                 }).catch(()=>{
                                     //요청이 실패했을 때
-
                                     console.log("axios 요청 실패");
                                 }).finally(() =>{
                                     //요청 성공여부에 상관없이 항상 실행할 코드
@@ -102,10 +126,13 @@ function App() {
                         }}>ajax 요청</button>
                     </>
                 }/>
+
+
                 <Route path="/detail/:id" element={
                         <Detail items={items}/>
                     }
                 />
+
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/about" element={<About/>}>
                     <Route path="member" element={<div>멤버 소개</div>}/>
@@ -122,6 +149,7 @@ function App() {
                     2. /event/two 페이지 접속 시 첫 주문 배송비 무료 이벤트 표시
                 */}
             </Routes>
+            </Suspense>
         </div>
     );
 }
@@ -176,3 +204,4 @@ class Detail2 extends React.Component {
 
 
 export default App;
+export let Context1 = React.createContext();
